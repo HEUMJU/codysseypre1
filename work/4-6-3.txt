@@ -1,0 +1,28 @@
+4-6-3
+컨테이너 실행 실습
+컨테이너 종료/유지(attach/exec 등)의 차이를 스스로 관찰하고 간단히 정리한다.
+
+
+PS C:\WINDOWS\system32> docker exec -it mybox bash
+root@9e4656b1802d:/temp# exit
+exit
+
+What's next:
+    Try Docker Debug for seamless, persistent debugging tools in any container or image → docker debug mybox
+    Learn more at https://docs.docker.com/go/debug-cli/
+PS C:\WINDOWS\system32> docker ps -a
+CONTAINER ID   IMAGE         COMMAND       CREATED             STATUS                         PORTS     NAMES
+9e723c5a425e   ubuntu        "/bin/bash"   18 minutes ago      Exited (0) 17 minutes ago                magical_bhaskara
+9e4656b1802d   ubuntu        "/bin/bash"   26 minutes ago      Up 26 minutes                            mybox
+78aca6db2842   hello-world   "/hello"      About an hour ago   Exited (0) About an hour ago             nice_morse
+PS C:\WINDOWS\system32> docker start mybox
+mybox
+PS C:\WINDOWS\system32> docker attach mybox
+root@9e4656b1802d:/# exit
+exit
+PS C:\WINDOWS\system32> docker ps -a
+CONTAINER ID   IMAGE         COMMAND       CREATED             STATUS                         PORTS     NAMES
+9e723c5a425e   ubuntu        "/bin/bash"   23 minutes ago      Exited (0) 22 minutes ago                magical_bhaskara
+9e4656b1802d   ubuntu        "/bin/bash"   31 minutes ago      Exited (0) 9 seconds ago                 mybox
+78aca6db2842   hello-world   "/hello"      About an hour ago   Exited (0) About an hour ago             nice_morse
+PS C:\WINDOWS\system32>

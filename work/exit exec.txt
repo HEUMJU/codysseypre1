@@ -1,0 +1,23 @@
+exit exec
+**나갔다 다시 들어가기: exit 와 exec 의 차이**
+
+exit 로 나오면 컨테이너가 멈춤(Exited)
+
+멈춘 컨테이너는 run 으로 새로 만드는 게 아니라 start 로 다시 켜고 exec 로 들어감
+
+exec 로 들어갔다 나오면 컨테이너는 계속 돌아감(Up)
+
+PS C:\WINDOWS\system32> docker start mybox
+mybox
+PS C:\WINDOWS\system32> docker exec -it mybox bash
+root@9e4656b1802d:/# ls
+bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  temp  tmp  usr  var
+root@9e4656b1802d:/# exit
+exit
+
+What's next:
+    Try Docker Debug for seamless, persistent debugging tools in any container or image → docker debug mybox
+    Learn more at https://docs.docker.com/go/debug-cli/
+PS C:\WINDOWS\system32> docker ps
+CONTAINER ID   IMAGE     COMMAND       CREATED          STATUS              PORTS     NAMES
+9e4656b1802d   ubuntu    "/bin/bash"   35 minutes ago   Up About a minute             mybox

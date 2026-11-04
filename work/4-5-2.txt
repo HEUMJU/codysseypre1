@@ -1,0 +1,7 @@
+4-5-2
+Docker 기본 운영 명령 수행
+컨테이너: 실행/중지/목록 확인 (예: docker ps, docker ps -a)
+
+PS C:\WINDOWS\system32> docker ps -a
+CONTAINER ID   IMAGE         COMMAND    CREATED          STATUS                     PORTS     NAMES
+78aca6db2842   hello-world   "/hello"   30 minutes ago   Exited (0) 5 minutes ago             nice_morse
