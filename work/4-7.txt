@@ -1,0 +1,52 @@
+4-7
+기존 Dockerfile 기반 커스텀 이미지 제작
+(A) 웹 서버 베이스 이미지 활용(예: NGINX/Apache 등) + 정적 콘텐츠/설정만 교체
+
+
+
+PS C:\Users\User\Desktop\codysseypre1> docker build -t my-web .
+[+] Building 11.7s (7/7) FINISHED                 docker:desktop-linux
+ => [internal] load build definition from Dockerfile              0.0s
+ => => transferring dockerfile: 111B                              0.0s
+ => [internal] load metadata for docker.io/library/nginx:latest   2.1s
+ => [internal] load .dockerignore                                 0.0s
+ => => transferring context: 2B                                   0.0s
+ => [internal] load build context                                 0.1s
+ => => transferring context: 311B                                 0.0s
+ => [1/2] FROM docker.io/library/nginx:latest@sha256:5ab5b0b0109  7.6s
+ => => resolve docker.io/library/nginx:latest@sha256:5ab5b0b0109  0.0s
+ => => sha256:a670537bed7086aeb8b663aad5e09cd584 1.40kB / 1.40kB  0.2s
+ => => sha256:d322f1bf41d8e99dc47f550cbf85e79ca1 1.21kB / 1.21kB  0.4s
+ => => sha256:c139fe92686de21a8c49d9cb40415d1dddd95f 404B / 404B  0.6s
+ => => sha256:9f604dae09b216f6c87919d0e59d5a4ddc4387 628B / 628B  0.6s
+ => => sha256:a071113ac575190a0fee0c046bcf5163 34.05MB / 34.05MB  5.0s
+ => => sha256:6e2ab1f3ef4e0ea3bbe1d208dfa048969199e3 964B / 964B  0.3s
+ => => sha256:6fc242d221a673263eabd14a9ad9584d 29.86MB / 29.86MB  5.5s
+ => => extracting sha256:6fc242d221a673263eabd14a9ad9584d3177c96  0.6s
+ => => extracting sha256:a071113ac575190a0fee0c046bcf51632356f07  0.6s
+ => => extracting sha256:9f604dae09b216f6c87919d0e59d5a4ddc4387e  0.0s
+ => => extracting sha256:6e2ab1f3ef4e0ea3bbe1d208dfa048969199e3d  0.0s
+ => => extracting sha256:c139fe92686de21a8c49d9cb40415d1dddd95fb  0.0s
+ => => extracting sha256:d322f1bf41d8e99dc47f550cbf85e79ca18bc45  0.0s
+ => => extracting sha256:a670537bed7086aeb8b663aad5e09cd584e19c6  0.0s
+ => [2/2] COPY index.html /usr/share/nginx/html/index.html        0.2s
+ => exporting to image                                            1.6s
+ => => exporting layers                                           0.1s
+ => => exporting manifest sha256:d7ff1ece689916053a6295764175efd  0.0s
+ => => exporting config sha256:0e5220190e86a02ff1167b2629b839e86  0.0s
+ => => exporting attestation manifest sha256:d21227b983e2b8cefa4  0.0s
+ => => exporting manifest list sha256:fa70d08a447b8c327cac58d6b3  0.0s
+ => => naming to docker.io/library/my-web:latest                  0.0s
+ => => unpacking to docker.io/library/my-web:latest               1.4s
+PS C:\Users\User\Desktop\codysseypre1> docker run -d -p 8080:80 --name my-web my-web
+bbc360907963b869b08367b0eddecb0c7d0183a0544ad15b301707246ef1f7dd
+PS C:\Users\User\Desktop\codysseypre1> docker ps
+CONTAINER ID   IMAGE     COMMAND                   CREATED          STATUS          PORTS                                     NAMES
+bbc360907963   my-web    "/docker-entrypoint.…"   34 seconds ago   Up 33 seconds   0.0.0.0:8080->80/tcp, [::]:8080->80/tcp   my-web
+PS C:\Users\User\Desktop\codysseypre1> docker stop my-web
+my-web
+PS C:\Users\User\Desktop\codysseypre1> docker rm my-web
+my-web
+PS C:\Users\User\Desktop\codysseypre1> docker ps -a
+CONTAINER ID   IMAGE         COMMAND    CREATED       STATUS                   PORTS     NAMES
+78aca6db2842   hello-world   "/hello"   2 hours ago   Exited (0) 2 hours ago             nice_morse
