@@ -1,0 +1,159 @@
+# Docker 컨테이너 실행 및 관리 실습
+
+## 1. hello-world 실행
+
+```powershell
+docker run hello-world
+```
+
+실행 결과:
+```text
+Unable to find image 'hello-world:latest' locally
+latest: Pulling from library/hello-world
+4f55086f7dd0: Pull complete
+d5e71e642bf5: Download complete
+Digest: sha256:c567b231f65614688711a75f31518a064258a51d442117a3e771a3a8fdba78ef
+Status: Downloaded newer image for hello-world:latest
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+```
+
+확인 사항:
+- 로컬에 이미지가 없으면 Docker Hub에서 이미지를 자동으로 다운로드함.
+- 컨테이너가 정상적으로 실행되어 `Hello from Docker!` 메시지를 출력함.
+- Docker 클라이언트와 데몬의 통신 및 컨테이너 실행이 정상임을 확인함.
+
+## 2. Ubuntu 컨테이너 실행
+
+```powershell
+docker run -it --name mybox ubuntu
+```
+
+실행 결과:
+```text
+Unable to find image 'ubuntu:latest' locally
+latest: Pulling from library/ubuntu
+f3f25b84a7d7: Pull complete
+edafa32f5d9e: Pull complete
+21594acc2d8b: Download complete
+Digest: sha256:6a06111c3b0a8600feadb270aec771dc239bf407b25625f93f44ab00e11f4d3c
+Status: Downloaded newer image for ubuntu:latest
+root@9e4656b1802d:/#
+```
+
+컨테이너 내부 명령:
+```bash
+ls
+echo "hello from container"
+cat /etc/os-release
+```
+
+주요 출력:
+```text
+hello from container
+
+PRETTY_NAME="Ubuntu 26.04.1 LTS"
+NAME="Ubuntu"
+VERSION_ID="26.04"
+VERSION="26.04.1 LTS (Resolute Raccoon)"
+VERSION_CODENAME=resolute
+ID=ubuntu
+```
+
+확인 사항:
+- Ubuntu 이미지 다운로드 및 컨테이너 생성 성공.
+- `-it` 옵션으로 대화형 터미널에 접속함.
+- 컨테이너 내부에서 디렉터리 조회, 문자열 출력, 운영체제 정보 확인을 수행함.
+
+## 3. docker exec 실습
+
+```powershell
+docker exec -it mybox bash
+```
+
+컨테이너 내부에서 다음 명령 실행:
+```bash
+exit
+```
+
+확인 사항:
+- 실행 중인 `mybox` 컨테이너에 새로운 Bash 프로세스로 접속함.
+- `exit` 입력으로 해당 Bash 세션을 종료함.
+- `exec`는 기존 컨테이너의 주 프로세스를 종료하는 것이 아니라 별도의 프로세스를 실행하는 방식임.
+
+## 4. 컨테이너 상태 확인 및 start 명령
+
+```powershell
+docker ps -a
+```
+
+확인된 컨테이너:
+```text
+CONTAINER ID   IMAGE         COMMAND       CREATED             STATUS                         PORTS     NAMES
+9e723c5a425e   ubuntu        "/bin/bash"   18 minutes ago      Exited (0) 17 minutes ago                magical_bhaskara
+9e4656b1802d   ubuntu        "/bin/bash"   26 minutes ago      Up 26 minutes                            mybox
+78aca6db2842   hello-world   "/hello"      About an hour ago   Exited (0) About an hour ago             nice_morse
+```
+
+실행 명령:
+```powershell
+docker start mybox
+```
+
+출력:
+```text
+mybox
+```
+
+참고:
+- `docker start` 명령을 실행했으나, 명령 직전 `mybox` 상태가 이미 `Up 26 minutes`였음.
+- 따라서 이 실행 기록만으로 정지된 컨테이너의 재시작을 검증했다고 판단하지 않음.
+
+## 5. docker attach 실습
+
+```powershell
+docker attach mybox
+```
+
+컨테이너 내부에서:
+```bash
+exit
+```
+
+출력:
+```text
+root@9e4656b1802d:/# exit
+exit
+```
+
+이후 상태 확인:
+```powershell
+docker ps -a
+```
+
+결과:
+```text
+CONTAINER ID   IMAGE         COMMAND       CREATED             STATUS                         PORTS     NAMES
+9e723c5a425e   ubuntu        "/bin/bash"   23 minutes ago      Exited (0) 22 minutes ago                magical_bhaskara
+9e4656b1802d   ubuntu        "/bin/bash"   31 minutes ago      Exited (0) 9 seconds ago                 mybox
+78aca6db2842   hello-world   "/hello"      About an hour ago   Exited (0) About an hour ago             nice_morse
+```
+
+확인 사항:
+- `attach`로 컨테이너의 기존 주 프로세스에 연결함.
+- 연결된 Bash에서 `exit`를 입력하여 주 프로세스를 종료함.
+- `docker ps -a`에서 `mybox`가 `Exited (0)` 상태로 변경된 것을 확인함.
+
+## 6. 실습 정리
+
+| 명령어 | 확인한 기능 |
+|---|---|
+| `docker run hello-world` | 이미지 다운로드 및 컨테이너 실행 |
+| `docker run -it --name mybox ubuntu` | Ubuntu 컨테이너 생성 및 대화형 접속 |
+| `docker exec -it mybox bash` | 실행 중인 컨테이너에 새 Bash 프로세스 실행 |
+| `docker start mybox` | 컨테이너 시작 명령 실행 |
+| `docker attach mybox` | 기존 주 프로세스에 연결 |
+| `docker ps -a` | 실행 및 종료된 컨테이너 목록 확인 |
+
+**핵심 차이:** `docker exec`는 컨테이너 안에 새로운 프로세스를 실행하고, `docker attach`는 기존 주 프로세스에 연결한다. 따라서 주 프로세스가 종료되면 컨테이너도 종료될 수 있다.

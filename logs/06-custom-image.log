@@ -1,0 +1,47 @@
+# Dockerfile 기반 커스텀 이미지 제작
+
+## 1. 이미지 빌드
+
+실행 위치:
+```powershell
+PS C:\Users\User\Desktop\codysseypre1>
+```
+
+실행 명령:
+```powershell
+docker build -t my-web .
+```
+
+주요 빌드 결과:
+```text
+[+] Building 11.7s (7/7) FINISHED
+ => [internal] load build definition from Dockerfile
+ => [internal] load metadata for docker.io/library/nginx:latest
+ => [internal] load .dockerignore
+ => [internal] load build context
+ => [1/2] FROM docker.io/library/nginx:latest
+ => [2/2] COPY index.html /usr/share/nginx/html/index.html
+ => exporting to image
+ => naming to docker.io/library/my-web:latest
+ => unpacking to docker.io/library/my-web:latest
+```
+
+결과:
+- NGINX 공식 이미지를 기반으로 빌드 진행.
+- `index.html`을 NGINX 기본 웹 루트 경로에 복사.
+- `my-web:latest`라는 커스텀 이미지 생성 성공.
+- 전체 빌드 소요 시간: 약 11.7초.
+
+## 2. 이미지 빌드 과정 이해
+
+| 명령 또는 단계 | 의미 |
+|---|---|
+| `docker build` | Dockerfile을 이용해 이미지 생성 |
+| `-t my-web` | 생성할 이미지 이름 지정 |
+| `.` | 현재 디렉터리를 빌드 컨텍스트로 지정 |
+| `FROM nginx:latest` | NGINX 이미지를 기반 이미지로 사용 |
+| `COPY index.html /usr/share/nginx/html/index.html` | HTML 파일을 이미지 내부 웹 루트로 복사 |
+
+## 3. 실습 결과
+
+Dockerfile을 이용해 NGINX 기반의 커스텀 웹 이미지 `my-web:latest`를 생성했다. 기본 NGINX 이미지에 직접 작성한 HTML 파일을 포함시켜 사용자 정의 웹 페이지를 제공할 수 있는 이미지를 제작했다.

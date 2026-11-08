@@ -1,0 +1,66 @@
+# Docker 포트 매핑 및 웹 컨테이너 실행
+
+## 1. 컨테이너 실행
+
+실행 명령:
+```powershell
+docker run -d -p 8080:80 --name my-web my-web
+```
+
+실행 결과:
+```text
+bbc360907963b869b08367b0eddecb0c7d0183a0544ad15b301707246ef1f7dd
+```
+
+옵션 설명:
+- `-d`: 컨테이너를 백그라운드에서 실행.
+- `-p 8080:80`: 호스트의 8080 포트를 컨테이너의 80 포트에 연결.
+- `--name my-web`: 컨테이너 이름을 `my-web`으로 지정.
+- 마지막 `my-web`: 실행할 이미지 이름.
+
+## 2. 컨테이너 실행 상태 확인
+
+실행 명령:
+```powershell
+docker ps
+```
+
+실행 결과:
+```text
+CONTAINER ID   IMAGE     COMMAND                   CREATED          STATUS          PORTS                                     NAMES
+bbc360907963   my-web    "/docker-entrypoint.…"   34 seconds ago   Up 33 seconds   0.0.0.0:8080->80/tcp, [::]:8080->80/tcp   my-web
+```
+
+확인 사항:
+- 컨테이너 상태가 `Up`으로 표시됨.
+- 호스트의 8080 포트가 컨테이너의 80 포트에 연결된 것을 확인함.
+- IPv4 및 IPv6 주소에 대한 포트 매핑 정보 확인.
+
+## 3. 컨테이너 정지 및 삭제
+
+실행 명령:
+```powershell
+docker stop my-web
+docker rm my-web
+docker ps -a
+```
+
+실행 결과:
+```text
+my-web
+my-web
+
+CONTAINER ID   IMAGE         COMMAND    CREATED       STATUS                   PORTS     NAMES
+78aca6db2842   hello-world   "/hello"   2 hours ago   Exited (0) 2 hours ago             nice_morse
+```
+
+확인 사항:
+- `docker stop my-web`으로 컨테이너 정지 성공.
+- `docker rm my-web`으로 컨테이너 삭제 성공.
+- `docker ps -a`에서 `my-web` 컨테이너가 목록에서 제거된 것을 확인함.
+
+## 4. 실습 결과
+
+커스텀 이미지 `my-web`을 컨테이너로 실행하고 호스트 8080 포트와 컨테이너 80 포트를 연결했다. `docker ps`에서 포트 매핑 및 실행 상태를 확인했으며, 실습 종료 후 컨테이너를 정지하고 삭제했다.
+
+※ 브라우저 또는 curl을 통한 실제 HTTP 응답 확인은 별도 검증이 필요하다.

@@ -1,0 +1,71 @@
+# Linux Permission Practice Log
+
+## 1. 실습 목적
+
+Linux 환경에서 디렉토리와 파일을 생성하고, chmod 명령어를 사용하여 파일 및 디렉토리의 접근 권한을 변경한다.
+
+## 2. 실습 과정
+
+### 2-1. 디렉토리 및 파일 생성
+
+```bash
+mkdir temp
+cd temp
+touch file.txt
+mkdir mydir
+```
+
+### 2-2. 권한 변경 전 확인
+
+```bash
+ls -l
+```
+
+실행 결과:
+
+```text
+total 4
+-rw-r--r-- 1 root root    0 Nov  4 07:49 file.txt
+drwxr-xr-x 2 root root 4096 Nov  4 07:49 mydir
+```
+
+초기 권한:
+- file.txt : 644
+- mydir : 755
+
+### 2-3. 권한 변경
+
+```bash
+chmod 600 file.txt
+chmod 700 mydir
+```
+
+### 2-4. 권한 변경 후 확인
+
+```bash
+ls -l
+```
+
+실행 결과:
+
+```text
+total 4
+-rw------- 1 root root    0 Nov  4 07:49 file.txt
+drwx------ 2 root root 4096 Nov  4 07:49 mydir
+```
+
+변경된 권한:
+- file.txt : 644 → 600
+- mydir : 755 → 700
+
+## 3. 실습 결과 및 분석
+
+chmod 명령어를 사용하여 파일과 디렉토리의 권한을 성공적으로 변경하였다.
+
+파일의 경우 소유자에게만 읽기 및 쓰기 권한을 부여하였으며, 디렉토리의 경우 소유자에게만 읽기, 쓰기 및 실행 권한을 부여하였다.
+
+ls -l 명령어를 통해 변경 전후의 권한을 비교하여 정상적으로 적용되었음을 확인하였다.
+
+## 4. 최종 결론
+
+Linux의 파일 및 디렉토리 권한은 소유자, 그룹, 기타 사용자로 구분되며, chmod 명령어를 이용하여 각 대상의 접근 권한을 제어할 수 있음을 확인하였다.

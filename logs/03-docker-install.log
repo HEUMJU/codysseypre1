@@ -1,0 +1,83 @@
+# Docker Installation & Environment Check
+
+## 1. 실습 목적
+
+Docker 설치 여부 및 버전을 확인하고, Docker 데몬의 정상 동작 여부와 실행 환경 정보를 점검한다.
+
+## 2. Docker 버전 확인
+
+### 실행 명령어
+
+```powershell
+docker --version
+```
+
+### 실행 결과
+
+```text
+Docker version 29.9.2, build a82e528
+```
+
+### 결과 분석
+
+Docker 버전 29.9.2가 정상적으로 확인되었다.
+
+## 3. Docker 환경 정보 확인
+
+### 실행 명령어
+
+```powershell
+docker info
+```
+
+### 주요 출력 결과
+
+```text
+Client:
+ Version:    29.9.2
+ Context:    desktop-linux
+
+Server:
+ Containers: 0
+  Running: 0
+  Paused: 0
+  Stopped: 0
+ Images: 0
+ Server Version: 29.9.2
+ Storage Driver: overlayfs
+ Cgroup Driver: cgroupfs
+ Cgroup Version: 2
+ Operating System: Docker Desktop
+ OSType: linux
+ Architecture: x86_64
+ CPUs: 16
+ Total Memory: 7.619GiB
+ Name: docker-desktop
+ Kernel Version: 6.18.54.1-microsoft-standard-WSL2
+ Docker Root Dir: /var/lib/docker
+```
+
+## 4. 실행 환경 분석
+
+- Docker Client 및 Server 버전: 29.9.2
+- Docker Desktop 버전: 4.98.0
+- Docker Context: desktop-linux
+- 컨테이너 운영 환경: Linux
+- 가상화 환경: WSL2
+- CPU: 16개
+- 메모리: 7.619GiB
+- Storage Driver: overlayfs
+
+## 5. 실습 결과
+
+docker --version 명령어를 통해 Docker 설치 및 버전을 확인하였다.
+
+docker info 명령어를 통해 Docker Client와 Server의 정보를 확인하였으며, Docker Server가 정상적으로 응답하는 것을 확인하였다.
+
+또한 Windows 환경에서 Docker Desktop과 WSL2 기반 Linux 엔진을 사용하고 있음을 확인하였다.
+
+## 6. 최종 결론
+
+Docker 설치 및 기본 환경 점검을 완료하였다.
+
+Docker 명령어를 실행할 수 있으며, Docker Server가 정상적으로 동작하는 것을 확인하였다.

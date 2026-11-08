@@ -1,0 +1,185 @@
+# Docker Basic Operations Practice Log
+
+## 1. 실습 목적
+
+Docker 이미지와 컨테이너의 상태를 확인하고, 컨테이너 실행 및 중지, 로그 확인, 리소스 모니터링, 삭제 작업을 수행한다.
+
+## 2. Docker 컨테이너 목록 확인
+
+### 2-1. 전체 컨테이너 확인
+
+```powershell
+docker ps -a
+```
+
+실행 결과:
+
+```text
+CONTAINER ID   IMAGE         COMMAND    CREATED          STATUS                     PORTS     NAMES
+78aca6db2842   hello-world   "/hello"   30 minutes ago   Exited (0) 5 minutes ago             nice_morse
+```
+
+### 2-2. 실행 중인 컨테이너 확인
+
+```powershell
+docker ps
+```
+
+실행 결과:
+
+```text
+CONTAINER ID   IMAGE     COMMAND       CREATED          STATUS              PORTS     NAMES
+9e4656b1802d   ubuntu    "/bin/bash"   35 minutes ago   Up About a minute             mybox
+```
+
+실행 중인 Ubuntu 컨테이너 mybox를 확인하였다.
+
+## 3. Docker 이미지 목록 확인
+
+### 실행 명령어
+
+```powershell
+docker images
+```
+
+실행 결과:
+
+```text
+IMAGE                ID             DISK USAGE   CONTENT SIZE
+hello-world:latest   c567b231f656       25.9kB         9.49kB
+ubuntu:latest        6a06111c3b0a        163MB         45.9MB
+```
+
+hello-world 및 ubuntu 이미지가 로컬 저장소에 존재하는 것을 확인하였다.
+
+## 4. Ubuntu 컨테이너 내부 명령 실행
+
+실행 중인 Ubuntu 컨테이너에서 Linux 기본 명령어를 실행하였다.
+
+### 실행 명령어 및 결과
+
+```bash
+ls
+```
+
+출력 결과:
+
+```text
+bin boot dev etc home lib lib64 media mnt opt proc root run sbin srv sys tmp usr var
+```
+
+```bash
+echo "hello from container"
+```
+
+출력 결과:
+
+```text
+hello from container
+```
+
+```bash
+cat /etc/os-release
+```
+
+주요 출력 결과:
+
+```text
+PRETTY_NAME="Ubuntu 26.04.1 LTS"
+NAME="Ubuntu"
+VERSION_ID="26.04"
+VERSION_CODENAME=resolute
+ID=ubuntu
+```
+
+Ubuntu 26.04.1 LTS 환경에서 Linux 명령어가 정상적으로 실행되는 것을 확인하였다.
+
+## 5. 컨테이너 로그 확인
+
+### 실행 명령어
+
+```powershell
+docker logs mybox
+```
+
+컨테이너 내부에서 실행했던 ls, echo, cat 명령의 출력 내용을 확인하였다.
+
+## 6. 컨테이너 리소스 확인
+
+### 실행 명령어
+
+```powershell
+docker stats --no-stream
+```
+
+실행 결과:
+
+```text
+CONTAINER ID   NAME    CPU %   MEM USAGE / LIMIT       MEM %   NET I/O         BLOCK I/O   PIDS
+9e4656b1802d   mybox   0.00%   2.32MiB / 7.619GiB      0.03%   1.17kB / 126B   0B / 0B     1
+```
+
+확인 당시 CPU 사용률 0.00%, 메모리 사용량 2.32MiB를 확인하였다.
+
+## 7. 컨테이너 중지 및 삭제
+
+### 7-1. 컨테이너 중지
+
+```powershell
+docker stop mybox
+```
+
+실행 결과:
+
+```text
+mybox
+```
+
+### 7-2. 컨테이너 삭제
+
+```powershell
+docker rm mybox
+```
+
+실행 결과:
+
+```text
+mybox
+```
+
+### 7-3. 전체 컨테이너 확인
+
+```powershell
+docker ps -a
+```
+
+중지된 Ubuntu 컨테이너가 삭제된 것을 확인하였다.
+
+추가로 기존에 종료된 magical_bhaskara 컨테이너도 삭제하였다.
+
+```powershell
+docker rm magical_bhaskara
+```
+
+### 7-4. 최종 컨테이너 목록
+
+```text
+CONTAINER ID   IMAGE         COMMAND    STATUS                   NAMES
+78aca6db2842   hello-world   "/hello"   Exited (0) 2 hours ago    nice_morse
+```
+
+## 8. 실습 결과 및 분석
+
+1. docker ps 명령어로 실행 중인 컨테이너를 확인하였다.
+2. docker ps -a 명령어로 실행 및 종료된 전체 컨테이너를 확인하였다.
+3. docker images 명령어로 로컬 이미지 목록을 확인하였다.
+4. Ubuntu 컨테이너 내부에서 Linux 기본 명령어를 실행하였다.
+5. docker logs 명령어로 컨테이너 로그를 확인하였다.
+6. docker stats 명령어로 CPU 및 메모리 사용량을 확인하였다.
+7. docker stop 및 docker rm 명령어로 컨테이너 중지 및 삭제를 수행하였다.
+
+## 9. 최종 결론
+
+Docker 이미지 및 컨테이너 관리에 필요한 기본 운영 명령어를 실습하였다.
+
+컨테이너의 실행 상태와 종료 상태를 구분할 수 있었으며, 컨테이너 내부 명령 실행, 로그 확인, 리소스 모니터링 및 컨테이너 삭제까지 정상적으로 수행하였다.
