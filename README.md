@@ -379,10 +379,10 @@ docker run -d -p 8080:80 --name my-web my-web
 
 #### 10-2. 포트 매핑 결과
 
-| 구분           |   포트 |
-| ------------ | ---: |
+| 구분 | 포트 |
+|---|---:|
 | 호스트(Windows) | 8080 |
-| 컨테이너(NGINX)  |   80 |
+| 컨테이너(NGINX) | 80 |
 
 확인된 포트 매핑:
 
@@ -399,145 +399,172 @@ http://localhost:8080
 
 - 브라우저에서 웹 페이지 접속 확인
 - 브라우저 주소창과 웹 페이지가 보이는 스크린샷 저장
+- 직접 작성한 HTML 콘텐츠가 정상적으로 표시되는 것을 확인
 
-#### 10-3. 컨테이너 정리
+#### 10-3. 브라우저 접속 증거
+
+![Docker 웹 페이지 접속 화면](screenshots/06-port-mapping/06-port-mapping.png)
+
+브라우저에서 `localhost:8080`에 접속하여 NGINX 컨테이너가 제공하는 사용자 정의 웹 페이지가 정상적으로 표시되는 것을 확인했다.
+
+#### 10-4. 컨테이너 정리
 
 - `docker stop my-web` 실행
 - `docker rm my-web` 실행
 - `docker ps -a`로 컨테이너 삭제 확인
 
-#### 10-4. 실습 증거
+#### 10-5. 실습 증거
 
 - 명령어 및 출력 로그: [07-port-mapping.log](logs/07-port-mapping.log)
 - 스크린샷: [screenshots/06-port-mapping/](screenshots/06-port-mapping/)
 
 ---
 
-## 11. 바인드 마운트 검증
+### 11. Docker 바인드 마운트
 
-### 11.1 바인드 마운트 개념
+#### 11-1. NGINX 컨테이너 실행
 
-호스트의 특정 디렉토리와 컨테이너 내부 디렉토리를 연결하여 호스트에서 파일을 변경하면 컨테이너에도 변경사항이 반영되는 기능입니다.
+```powershell
+docker run -d -p 8082:80 --name my-web-live -v ${PWD}:/usr/share/nginx/html nginx
+```
 
-### 11.2 검증 절차
+- NGINX 이미지 다운로드 및 컨테이너 실행
+- 호스트 8082 포트와 컨테이너 80 포트 연결
+- 호스트 현재 작업 폴더를 컨테이너 웹 루트에 바인드 마운트
 
-1. 호스트의 HTML 파일 준비
-2. 바인드 마운트 설정 후 컨테이너 실행
-3. 브라우저에서 최초 화면 확인
-4. 호스트 파일 내용 변경
-5. 브라우저에서 변경사항 반영 확인
+#### 11-2. 바인드 마운트 개념
 
-### 11.3 검증 결과
+호스트의 특정 디렉터리를 컨테이너 내부 디렉터리와 연결하는 방식이다. 호스트에서 파일을 수정하면 컨테이너에서도 변경된 파일을 확인할 수 있다.
 
-**변경 전**
+| 구분 | 경로 |
+|---|---|
+| 호스트 | `${PWD}` (현재 작업 폴더) |
+| 컨테이너 | `/usr/share/nginx/html` |
+| 접속 주소 | `http://localhost:8082` |
 
-![변경 전](screenshots/07-bind-mount/before.png)
+- 호스트 파일 수정 전후 변경 사항 확인
+- 브라우저에서 변경 내용 반영 확인
+- 변경 전후 스크린샷 저장
 
-**변경 후**
+#### 11-3. 실습 로그 및 증거
 
-![변경 후](screenshots/07-bind-mount/after.png)
-
-**실행 및 검증 로그**
-
-[바인드 마운트 로그](logs/08-bind-mount.log)
+- 명령어 및 출력 로그: [08-bind-mount.log](logs/08-bind-mount.log)
+- 스크린샷: [08-bind-mount.png](screenshots/08-bind-mount.png)
 
 ---
 
-## 12. Docker 볼륨 영속성 검증
+### 12. Docker Volume을 이용한 데이터 영속성 확인
 
-### 12.1 Docker 볼륨 개념
+#### 12-1. 볼륨 생성
 
-Docker 볼륨은 컨테이너와 독립적으로 데이터를 보관하는 저장 공간입니다.
-
-컨테이너를 삭제하더라도 볼륨을 삭제하지 않으면 데이터가 유지됩니다.
-
-### 12.2 검증 절차
-
-1. Docker 볼륨 생성
-2. 컨테이너에 볼륨 연결
-3. 컨테이너 내부에 데이터 생성
-4. 컨테이너 삭제
-5. 새로운 컨테이너에 동일한 볼륨 연결
-6. 기존 데이터 유지 여부 확인
-
-### 12.3 데이터 영속성 검증
-
-**컨테이너 삭제 전**
-
-```bash
-# 실제 수행 명령 및 결과 작성 예정
+```powershell
+docker volume create mydata
 ```
 
-**컨테이너 삭제 후**
+- `mydata` 볼륨 생성
 
-```bash
-# 실제 수행 명령 및 결과 작성 예정
+#### 12-2. 컨테이너에 볼륨 연결 및 파일 저장
+
+```powershell
+docker run -it --name vol-test -v mydata:/data ubuntu
 ```
 
-**검증 결과**
+컨테이너 내부:
+```bash
+echo "hello volume" > /data/memo.txt
+```
 
-[볼륨 영속성 로그](logs/09-volume.log)
+- Docker Volume을 컨테이너 `/data` 경로에 연결
+- `memo.txt` 파일 생성 및 데이터 저장
 
-[컨테이너 삭제 전 스크린샷](screenshots/08-volume/before.png)
+#### 12-3. 컨테이너 삭제 후 데이터 확인
 
-[컨테이너 삭제 후 스크린샷](screenshots/08-volume/after.png)
+```powershell
+docker rm vol-test
+docker run -it --rm -v mydata:/data ubuntu cat /data/memo.txt
+```
+
+확인 결과:
+```text
+hello volume
+```
+
+- 데이터를 저장한 컨테이너 삭제
+- 새 컨테이너에서 기존 파일 내용 확인
+- 컨테이너 삭제 후에도 볼륨 데이터가 유지되는 것을 검증
+
+#### 12-4. 볼륨 목록 확인
+
+```powershell
+docker volume ls
+```
+
+확인 결과:
+```text
+DRIVER    VOLUME NAME
+local     mydata
+```
+
+#### 12-5. 실습 로그 및 증거
+
+- 명령어 및 출력 로그: [09-volume.log](logs/09-volume.log)
 
 ---
 
-## 13. Git 설정 및 GitHub 연동
+### 13. Git 사용자 정보 및 기본 브랜치 설정
 
-### 13.1 Git 사용자 정보 설정
+#### 13-1. Git 사용자 정보 설정
 
 ```bash
-git config --global user.name "사용자 이름"
-git config --global user.email "이메일 주소"
+git config --global user.name "HEUMJU"
+git config --global user.email "설정한 이메일 주소"
 ```
 
-### 13.2 기본 브랜치 설정
+- Git 사용자 이름 설정
+- Git 사용자 이메일 설정
+
+#### 13-2. 기본 브랜치 설정
 
 ```bash
 git config --global init.defaultBranch main
 ```
 
-### 13.3 설정 확인
+- 기본 브랜치 이름을 `main`으로 설정
+
+#### 13-3. Git 설정 확인
 
 ```bash
 git config --list
 ```
 
-### 13.4 GitHub 저장소 연동
+- Git 사용자 이름 및 이메일 설정 확인
+- `init.defaultBranch` 설정 확인
+- 중복된 기본 브랜치 설정의 출처 및 적용값 확인
 
-검증 항목:
+#### 13-4. 실습 로그
 
-- Git 사용자 정보 설정
-- 기본 브랜치 설정
-- GitHub 로그인
-- VSCode GitHub 연동
-- 원격 저장소 연결
-- 프로젝트 업로드 및 커밋 확인
-
-### 13.5 수행 결과
-
-[Git 설정 및 연동 로그](logs/10-git-github.log)
-
-[GitHub 로그인 및 저장소 연동 스크린샷](screenshots/09-git-github/)
-
-**GitHub Repository:** [저장소 링크 작성 예정]
+- 명령어 및 출력 로그: [10-git-github.log](logs/10-git-github.log)
 
 ---
 
-## 14. 트러블슈팅
+### 14. 트러블슈팅
 
-실습 과정에서 발생한 문제와 해결 방법을 기록합니다.
+#### Troubleshooting #1. Docker 컨테이너 이름 중복 및 재접속
 
-상세 내용은 별도 문서에서 관리합니다.
+- **문제:** PowerShell을 종료한 후 다시 `docker run --name mybox`를 실행했을 때 이름 중복 오류 발생
+- **원인:** 기존 `mybox` 컨테이너가 종료되지 않고 실행 중이었음
+- **해결:** `docker ps -a`로 컨테이너 상태를 확인한 후 `docker exec -it mybox bash`로 기존 컨테이너에 재접속
+- **결과:** 기존 컨테이너 및 데이터 환경을 유지하면서 작업 재개 성공
 
-[트러블슈팅 문서 바로가기](docs/troubleshooting.md)
+#### Troubleshooting #2. Dockerfile 저장 누락으로 인한 빌드 실패
 
-| 번호 | 문제 | 원인 | 해결 방법 |
-|---|---|---|---|
-| 01 | [작성 예정] | [작성 예정] | [작성 예정] |
-| 02 | [작성 예정] | [작성 예정] | [작성 예정] |
+- **문제:** `docker build -t my-web .` 실행 시 `the Dockerfile cannot be empty` 오류 발생
+- **원인:** Dockerfile과 index.html 작성 후 파일을 저장하지 않음
+- **해결:** 파일 저장 후 이미지 빌드 명령 재실행
+- **결과:** NGINX 기반 커스텀 이미지 생성 및 컨테이너 실행 성공
+- **검증:** `docker ps`에서 컨테이너 `Up` 상태와 `8080:80` 포트 매핑 확인
+
+자세한 내용: [troubleshooting.md](docs/troubleshooting.md)
 
 ---
 

@@ -1,0 +1,86 @@
+# Docker Volume 실습
+
+## 1. Docker 볼륨 생성
+
+실행 명령:
+```powershell
+docker volume create mydata
+```
+
+실행 결과:
+```text
+mydata
+```
+
+## 2. 볼륨을 Ubuntu 컨테이너에 연결하고 데이터 저장
+
+실행 명령:
+```powershell
+docker run -it --name vol-test -v mydata:/data ubuntu
+```
+
+컨테이너 내부에서 실행:
+```bash
+echo "hello volume" > /data/memo.txt
+exit
+```
+
+확인 사항:
+- `mydata` 볼륨을 컨테이너 내부 `/data` 경로에 연결.
+- `/data/memo.txt` 파일에 `hello volume` 문자열 저장.
+- 컨테이너 종료.
+
+## 3. 기존 컨테이너 삭제
+
+실행 명령:
+```powershell
+docker rm vol-test
+```
+
+실행 결과:
+```text
+vol-test
+```
+
+확인 사항:
+- 데이터를 저장했던 `vol-test` 컨테이너 삭제 성공.
+
+## 4. 새 컨테이너에서 데이터 유지 여부 확인
+
+실행 명령:
+```powershell
+docker run -it --rm -v mydata:/data ubuntu cat /data/memo.txt
+```
+
+실행 결과:
+```text
+hello volume
+```
+
+확인 사항:
+- 기존 컨테이너를 삭제한 후 새로운 Ubuntu 컨테이너에서 파일 내용 확인.
+- `hello volume` 문자열이 정상적으로 출력됨.
+- 컨테이너 삭제 후에도 Docker 볼륨의 데이터가 유지되는 것을 확인함.
+- `--rm` 옵션으로 확인용 컨테이너는 명령 종료 후 자동 삭제됨.
+
+## 5. Docker 볼륨 목록 확인
+
+실행 명령:
+```powershell
+docker volume ls
+```
+
+실행 결과:
+```text
+DRIVER    VOLUME NAME
+local     mydata
+```
+
+확인 사항:
+- Docker 볼륨 목록에서 `mydata` 확인.
+
+## 6. 실습 결과
+
+Docker Volume을 생성하고 Ubuntu 컨테이너의 `/data` 경로에 연결했다. 컨테이너 내부에 파일을 생성한 뒤 해당 컨테이너를 삭제하고, 새로운 컨테이너에서 파일 내용을 다시 확인했다.
+
+이를 통해 컨테이너의 생명주기와 별개로 Docker Volume에 저장된 데이터가 유지되는 것을 검증했다.
