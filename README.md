@@ -127,8 +127,6 @@ echo $SHELL
 
 [터미널 조작 로그](logs/01-terminal.log)
 
-[터미널 조작 스크린샷](screenshots/01-terminal/)
-
 ---
 
 ## 5. Linux 파일 권한 실습

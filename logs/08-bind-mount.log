@@ -4,7 +4,7 @@
 
 실행 명령:
 ```powershell
-docker run -d -p 8082:80 --name my-web-live -v ${PWD}:/usr/share/nginx/html nginx
+docker run -d -p 8082:80 --name my-web-live -v ${PWD}/app:/usr/share/nginx/html nginx
 ```
 
 실행 결과:
