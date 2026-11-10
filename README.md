@@ -300,22 +300,22 @@ Docker 이미지 조회, 컨테이너 상태 확인, 내부 명령 실행, 로�
 
 ---
 
-### 8. Docker 컨테이너 실행 및 관리
+## 8. Docker 컨테이너 실행 및 관리
 
-#### 8-1. hello-world 실행
+### 8-1. hello-world 실행
 
 - `docker run hello-world` 실행
 - 이미지가 로컬에 없을 때 Docker Hub에서 자동 다운로드되는 과정 확인
 - `Hello from Docker!` 출력으로 Docker 설치 및 실행 정상 여부 확인
 
-#### 8-2. Ubuntu 컨테이너 실행
+### 8-2. Ubuntu 컨테이너 실행
 
 - `docker run -it --name mybox ubuntu` 실행
 - Ubuntu 이미지 다운로드 및 컨테이너 생성
 - 컨테이너 내부에서 `ls`, `echo`, `cat /etc/os-release` 실행
 - Ubuntu 26.04.1 LTS 환경 확인
 
-#### 8-3. exec와 attach 차이 확인
+### 8-3. exec와 attach 차이 확인
 
 | 구분     | 명령어                          | 동작                            |
 | ------ | ---------------------------- | ----------------------------- |
@@ -326,20 +326,20 @@ Docker 이미지 조회, 컨테이너 상태 확인, 내부 명령 실행, 로�
 - `attach`를 이용한 기존 주 프로세스 연결 확인
 - `attach` 상태에서 `exit` 실행 후 컨테이너 종료 확인
 
-#### 8-4. 컨테이너 상태 관리
+### 8-4. 컨테이너 상태 관리
 
 - `docker ps -a`로 전체 컨테이너 상태 확인
 - `docker start mybox` 명령 실행
 - 정지된 컨테이너를 `docker start`로 재시작하고 상태 확인
 
-#### 8-5. 실습 로그 및 증거
+### 8-5. 실습 로그 및 증거
 
 - 명령어 및 출력 로그: [05-container-practice.log](logs/05-container-practice.log)
 
 ---
-### 9. Dockerfile 기반 커스텀 이미지 제작
+## 9. Dockerfile 기반 커스텀 이미지 제작
 
-#### 9-1. NGINX 기반 이미지 빌드
+### 9-1. NGINX 기반 이미지 빌드
 
 - Dockerfile 작성
 - NGINX 공식 이미지 기반으로 설정
@@ -347,7 +347,7 @@ Docker 이미지 조회, 컨테이너 상태 확인, 내부 명령 실행, 로�
 - `docker build -t my-web .` 실행
 - `my-web:latest` 이미지 생성 확인
 
-#### 9-2. 빌드 결과
+### 9-2. 빌드 결과
 
 | 항목      | 결과                               |
 | ------- | -------------------------------- |
@@ -358,15 +358,15 @@ Docker 이미지 조회, 컨테이너 상태 확인, 내부 명령 실행, 로�
 | 빌드 시간   | 약 11.7초                          |
 | 빌드 결과   | 성공                               |
 
-#### 9-3. 실습 증거
+### 9-3. 실습 증거
 
 - 명령어 및 출력 로그: [06-custom-image.log](logs/06-custom-image.log)
 
 ---
 
-### 10. Docker 포트 매핑 및 웹 서버 실행
+## 10. Docker 포트 매핑 및 웹 서버 실행
 
-#### 10-1. 컨테이너 실행
+### 10-1. 컨테이너 실행
 
 ```powershell
 docker run -d -p 8080:80 --name my-web my-web
@@ -377,7 +377,7 @@ docker run -d -p 8080:80 --name my-web my-web
 - 컨테이너 이름 `my-web` 지정
 - `docker ps`로 실행 상태 및 포트 매핑 확인
 
-#### 10-2. 포트 매핑 결과
+### 10-2. 포트 매핑 결과
 
 | 구분 | 포트 |
 |---|---:|
@@ -401,28 +401,28 @@ http://localhost:8080
 - 브라우저 주소창과 웹 페이지가 보이는 스크린샷 저장
 - 직접 작성한 HTML 콘텐츠가 정상적으로 표시되는 것을 확인
 
-#### 10-3. 브라우저 접속 증거
+### 10-3. 브라우저 접속 증거
 
-![Docker 웹 페이지 접속 화면](screenshots/06-port-mapping/06-port-mapping.png)
+![Docker 웹 페이지 접속 화면](screenshots/06-port-mapping.png)
 
 브라우저에서 `localhost:8080`에 접속하여 NGINX 컨테이너가 제공하는 사용자 정의 웹 페이지가 정상적으로 표시되는 것을 확인했다.
 
-#### 10-4. 컨테이너 정리
+### 10-4. 컨테이너 정리
 
 - `docker stop my-web` 실행
 - `docker rm my-web` 실행
 - `docker ps -a`로 컨테이너 삭제 확인
 
-#### 10-5. 실습 증거
+### 10-5. 실습 증거
 
 - 명령어 및 출력 로그: [07-port-mapping.log](logs/07-port-mapping.log)
-- 스크린샷: [screenshots/06-port-mapping/](screenshots/06-port-mapping/)
+- 스크린샷: [screenshots/06-port-mapping.png](screenshots/06-port-mapping.png)
 
 ---
 
-### 11. Docker 바인드 마운트
+## 11. Docker 바인드 마운트
 
-#### 11-1. NGINX 컨테이너 실행
+### 11-1. NGINX 컨테이너 실행
 
 ```powershell
 docker run -d -p 8082:80 --name my-web-live -v ${PWD}:/usr/share/nginx/html nginx
@@ -432,7 +432,7 @@ docker run -d -p 8082:80 --name my-web-live -v ${PWD}:/usr/share/nginx/html ngin
 - 호스트 8082 포트와 컨테이너 80 포트 연결
 - 호스트 현재 작업 폴더를 컨테이너 웹 루트에 바인드 마운트
 
-#### 11-2. 바인드 마운트 개념
+### 11-2. 바인드 마운트 개념
 
 호스트의 특정 디렉터리를 컨테이너 내부 디렉터리와 연결하는 방식이다. 호스트에서 파일을 수정하면 컨테이너에서도 변경된 파일을 확인할 수 있다.
 
@@ -446,16 +446,15 @@ docker run -d -p 8082:80 --name my-web-live -v ${PWD}:/usr/share/nginx/html ngin
 - 브라우저에서 변경 내용 반영 확인
 - 변경 전후 스크린샷 저장
 
-#### 11-3. 실습 로그 및 증거
+### 11-3. 실습 로그 및 증거
 
 - 명령어 및 출력 로그: [08-bind-mount.log](logs/08-bind-mount.log)
-- 스크린샷: [08-bind-mount.png](screenshots/08-bind-mount.png)
 
 ---
 
-### 12. Docker Volume을 이용한 데이터 영속성 확인
+## 12. Docker Volume을 이용한 데이터 영속성 확인
 
-#### 12-1. 볼륨 생성
+### 12-1. 볼륨 생성
 
 ```powershell
 docker volume create mydata
@@ -463,7 +462,7 @@ docker volume create mydata
 
 - `mydata` 볼륨 생성
 
-#### 12-2. 컨테이너에 볼륨 연결 및 파일 저장
+### 12-2. 컨테이너에 볼륨 연결 및 파일 저장
 
 ```powershell
 docker run -it --name vol-test -v mydata:/data ubuntu
@@ -477,7 +476,7 @@ echo "hello volume" > /data/memo.txt
 - Docker Volume을 컨테이너 `/data` 경로에 연결
 - `memo.txt` 파일 생성 및 데이터 저장
 
-#### 12-3. 컨테이너 삭제 후 데이터 확인
+### 12-3. 컨테이너 삭제 후 데이터 확인
 
 ```powershell
 docker rm vol-test
@@ -493,7 +492,7 @@ hello volume
 - 새 컨테이너에서 기존 파일 내용 확인
 - 컨테이너 삭제 후에도 볼륨 데이터가 유지되는 것을 검증
 
-#### 12-4. 볼륨 목록 확인
+### 12-4. 볼륨 목록 확인
 
 ```powershell
 docker volume ls
@@ -505,15 +504,15 @@ DRIVER    VOLUME NAME
 local     mydata
 ```
 
-#### 12-5. 실습 로그 및 증거
+### 12-5. 실습 로그 및 증거
 
 - 명령어 및 출력 로그: [09-volume.log](logs/09-volume.log)
 
 ---
 
-### 13. Git 사용자 정보 및 기본 브랜치 설정
+## 13. Git 사용자 정보 및 기본 브랜치 설정
 
-#### 13-1. Git 사용자 정보 설정
+### 13-1. Git 사용자 정보 설정
 
 ```bash
 git config --global user.name "HEUMJU"
@@ -523,7 +522,7 @@ git config --global user.email "설정한 이메일 주소"
 - Git 사용자 이름 설정
 - Git 사용자 이메일 설정
 
-#### 13-2. 기본 브랜치 설정
+### 13-2. 기본 브랜치 설정
 
 ```bash
 git config --global init.defaultBranch main
@@ -531,7 +530,7 @@ git config --global init.defaultBranch main
 
 - 기본 브랜치 이름을 `main`으로 설정
 
-#### 13-3. Git 설정 확인
+### 13-3. Git 설정 확인
 
 ```bash
 git config --list
@@ -541,22 +540,22 @@ git config --list
 - `init.defaultBranch` 설정 확인
 - 중복된 기본 브랜치 설정의 출처 및 적용값 확인
 
-#### 13-4. 실습 로그
+### 13-4. 실습 로그
 
 - 명령어 및 출력 로그: [10-git-github.log](logs/10-git-github.log)
 
 ---
 
-### 14. 트러블슈팅
+## 14. 트러블슈팅
 
-#### Troubleshooting #1. Docker 컨테이너 이름 중복 및 재접속
+### Troubleshooting #1. Docker 컨테이너 이름 중복 및 재접속
 
 - **문제:** PowerShell을 종료한 후 다시 `docker run --name mybox`를 실행했을 때 이름 중복 오류 발생
 - **원인:** 기존 `mybox` 컨테이너가 종료되지 않고 실행 중이었음
 - **해결:** `docker ps -a`로 컨테이너 상태를 확인한 후 `docker exec -it mybox bash`로 기존 컨테이너에 재접속
 - **결과:** 기존 컨테이너 및 데이터 환경을 유지하면서 작업 재개 성공
 
-#### Troubleshooting #2. Dockerfile 저장 누락으로 인한 빌드 실패
+### Troubleshooting #2. Dockerfile 저장 누락으로 인한 빌드 실패
 
 - **문제:** `docker build -t my-web .` 실행 시 `the Dockerfile cannot be empty` 오류 발생
 - **원인:** Dockerfile과 index.html 작성 후 파일을 저장하지 않음
